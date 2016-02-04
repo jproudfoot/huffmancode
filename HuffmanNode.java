@@ -1,10 +1,10 @@
 
 public class HuffmanNode implements Comparable<HuffmanNode>{
-	private Character character;
+	private String character;
 	private int frequency;
 	private HuffmanNode left, right;
 	
-	public HuffmanNode (Character c) {
+	public HuffmanNode (String c) {
 		this.setCharacter(c);
 		this.setFrequency(1);
 		
@@ -12,7 +12,7 @@ public class HuffmanNode implements Comparable<HuffmanNode>{
 		this.setRight(null);
 	}
 	
-	public HuffmanNode (Character c, int frequency) {
+	public HuffmanNode (String c, int frequency) {
 		this.setCharacter(c);
 		this.setFrequency(frequency);
 		
@@ -31,7 +31,7 @@ public class HuffmanNode implements Comparable<HuffmanNode>{
 	 * Returns the character of the Huffman Node
 	 * @return Character character
 	 */
-	public Character getCharacter() {
+	public String getCharacter() {
 		return character;
 	}
 
@@ -39,7 +39,7 @@ public class HuffmanNode implements Comparable<HuffmanNode>{
 	 * Sets the character of the HuffmanNode
 	 * @param character
 	 */
-	public void setCharacter(Character character) {
+	public void setCharacter(String character) {
 		this.character = character;
 	}
 
@@ -110,14 +110,14 @@ public class HuffmanNode implements Comparable<HuffmanNode>{
 		else {
 			String str = " " + character;
 			if (left != null && right != null) {
-				str += " (" + left.toString() + ", " + right.toString() +")";
+				str += character + " (" + left.toString() + ", " + right.toString() +")";
 			}
 			else{
 				if (left != null) {
-					str += "(" + left.toString() + ", ())";
+					str += character + " (" + left.toString() + ", ())";
 				}
 				else if (right != null) {
-					str += "((), " + right.toString() + ")";
+					str += character + " ((), " + right.toString() + ")";
 				}
 			}
 				

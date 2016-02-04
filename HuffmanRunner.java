@@ -1,19 +1,11 @@
 
 public class HuffmanRunner {
 	public static void main (String [] args) {
-		HuffmanNode root = new HuffmanNode(null);
-		HuffmanNode leftRoot = new HuffmanNode(null);
-		HuffmanNode rightRoot = new HuffmanNode(null);
+		HuffmanTree tree = new HuffmanTree("hello");
+		System.out.println(tree);
 		
-		leftRoot.setLeft(new HuffmanNode('a'));
-		leftRoot.setRight(new HuffmanNode('b'));
+		System.out.println(tree.encode("hell"));
+		System.out.println(tree.decode("11001010"));
 		
-		rightRoot.setLeft(new HuffmanNode('c'));
-		rightRoot.setRight(new HuffmanNode('d'));
-		
-		root.setLeft(leftRoot);
-		root.setRight(rightRoot);
-		
-		System.out.println(root);
 	}
 }

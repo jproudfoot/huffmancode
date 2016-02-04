@@ -21,21 +21,21 @@ public class HuffmanTree {
 	 */
 	private void init() {
 		/*
-		 * I decided to use HashMap because for this scenario I want a faster get/set 
+		* I decided to use HashMap because for this scenario I want a faster get/set 
 		*runtime and I do not care if the values are sorted. A TreeMap has a longer 
 		*runtime because it takes time to sort the values.
 		*/
-		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		
 		/*
 		 *Traverses through the string and add/increments character frequencies 
 		 */
 		for (Character c : string.toCharArray()) {
 			if (map.containsKey(c)) {
-				map.put(c, map.get(c) + 1);
+				map.put(c +"", map.get(c) + 1);
 			}
 			else {
-				map.put(c,  1);
+				map.put(c + "",  1);
 			}
 		}
 		
@@ -44,7 +44,7 @@ public class HuffmanTree {
 		 */
 		
 		PriorityQueue<HuffmanNode> queue = new PriorityQueue<HuffmanNode>();
-		for (Entry<Character, Integer> en : map.entrySet()) {
+		for (Entry<String, Integer> en : map.entrySet()) {
 			queue.add(new HuffmanNode(en.getKey(), en.getValue()));
 		}
 		
@@ -54,12 +54,13 @@ public class HuffmanTree {
 		while(queue.size() > 1) {
 			HuffmanNode lesser = queue.poll();
 			HuffmanNode greater = queue.poll();
-			HuffmanNode newNode = new HuffmanNode(null, lesser.getFrequency() + greater.getFrequency());
+			HuffmanNode newNode = new HuffmanNode(lesser.getCharacter() + greater.getCharacter(), lesser.getFrequency() + greater.getFrequency());
 			//Stores the greater priority node in the right pointer
 			newNode.setLeft(lesser);
 			newNode.setRight(greater);
+			
+			queue.add(newNode);
 		}
-		
 		//Sets the root to the remaining node, which should be the HuffmanNode with greatest priority
 		root = queue.poll();
 	}
@@ -71,7 +72,13 @@ public class HuffmanTree {
 	 * @return String encoded
 	 */
 	public String encode (String plaintext) {
+		String code = "";
 		
+		for (Character c : plaintext.toCharArray()) {
+			code += code(root, c, "");
+		}
+		
+		return code;
 	}
 	
 	/**
@@ -81,7 +88,42 @@ public class HuffmanTree {
 	 * @return plaintext
 	 */
 	public String decode (String encoded) {
+		String plaintext = "";
 		
+		HuffmanNode index = root;
+		for (Character c : encoded.toCharArray()) {
+			
+			if (c == '0') {
+				index = index.getLeft();
+			}
+			else if (c == '1') {
+				index = index.getRight();
+			}
+			
+			if (index.getLeft() == null && index.getRight() == null) {
+				plaintext += "" + index.getCharacter();
+				index = root;
+			}
+		}
+		
+		return plaintext;
+	}
+	
+	/**
+	 * Finds the code for the string character
+	 * @return string encoded valie
+	 */
+	
+	private String code (HuffmanNode node, Character c, String code) {
+		if (node.getLeft() == null && node.getRight() == null) {
+			return code;
+		}
+		if (node.getLeft().getCharacter().contains(c +"")) {
+			return 0 + code(node.getLeft(), c, code);
+		}
+		else {
+			return 1 + code (node.getRight(), c, code);
+		}
 	}
 	
 	/** Returns a string representation of the binary tree.
